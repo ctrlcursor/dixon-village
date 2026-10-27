@@ -1,0 +1,30 @@
+# The Village Worker (s437, 15 Oct 2026). Code: src/index.js; engine: scripts/live-room/village/.
+# Deploying it to Ben's Cloudflare account, creating its KV namespace, adding the Workers AI
+# binding and entering the secrets are Ben's (the click-by-click steps are in
+# docs/research/live-room/village/cloud-deploy.md).
+#
+# Bundle for a dashboard paste, no sign-in needed:
+#   npx wrangler deploy --dry-run --outdir workers/village/dist --config workers/village/wrangler.toml
+
+name = "village"
+main = "src/index.js"
+compatibility_date = "2026-10-13"
+workers_dev = true
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[[kv_namespaces]]
+binding = "VILLAGE"
+id = "00000000000000000000000000000000" # Ben's: replace with the namespace id he creates
+
+[ai]
+binding = "AI"
+
+[vars]
+SEASON_LENGTH = "7"
+FIRST_DAY = "5"   # the 14 Oct day was day 1; the 15 Oct rehearsal recorded days 2 to 4
+FIRST_GAZETTE = "2"   # the rehearsal wrote edition 1
+
+[observability]
+enabled = true
